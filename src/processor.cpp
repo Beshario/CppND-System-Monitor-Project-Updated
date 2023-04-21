@@ -4,7 +4,7 @@
 float Processor::Utilization() {
   std::string line, key;
   std::ifstream filestream(LinuxParser::kProcDirectory+LinuxParser::kStatFilename);
-  if (filestream.is_open()) { // Code help taken from mentor answer and stack overflow
+  if (filestream.is_open()) { 
     while (std::getline(filestream, line)) {
       std::replace(line.begin(), line.begin()+4, ' ', '_');
       std::istringstream linestream(line);
@@ -22,5 +22,5 @@ float Processor::Utilization() {
   const float idled = idle - prevIdle;
   prevTotal = total;
   prevIdle = idle;
-  return (totald - idled)/totald;
+   return (totald - idled)/totald;
 }
