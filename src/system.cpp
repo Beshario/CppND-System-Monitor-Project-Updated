@@ -16,16 +16,20 @@ using std::vector;
 // Return the system's CPU
 Processor& System::Cpu() { return cpu_; }
 
-// Return a container composed of the system's processes
-vector<Process>& System::Processes() {
+// initialize processes from linux parser
+void System::initProcesses(){
   processes_.clear();
   vector<int> pids = LinuxParser::Pids();
   for (int pid : pids) {
     Process process(pid);
-    processes_.push_back(process);
+    processes_.emplace_back(process);
   }
+}
+// Return a container composed of the system's processes
+vector<Process>& System::Processes() {
+  initProcesses();
   // sort processes by CPU utilization in descending order
-    std::sort(processes_.begin(), processes_.end(), std::greater<Process>());
+  std::sort(processes_.begin(), processes_.end() );
   return processes_;
 }
 

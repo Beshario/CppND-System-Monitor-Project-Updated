@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "process.h"
 
@@ -10,17 +11,26 @@ using std::string;
 using std::to_string;
 using std::vector;
 
+Process::Process(int pid) : pid_(pid) {
+    Process::CpuUtilization(pid);
+};
 // TODO: Return this process's ID
 int Process::Pid() { return pid_; }
 
 // Return this process's CPU utilization
-float Process::CpuUtilization () { 
-    long active_time = LinuxParser::ActiveJiffies(pid_);
-    long uptime = LinuxParser::UpTime();
-    long elapsed_time = uptime - (LinuxParser::UpTime(pid_) / sysconf(_SC_CLK_TCK));
-    cpu_utilization_ = static_cast<float>(active_time) / static_cast<float>(elapsed_time);
-    return cpu_utilization_;
- }
+// this function is called by the system every second
+float Process::CpuUtilization() {
+  return cpu_utilization_;
+}
+
+void Process::CpuUtilization(int pid) {
+  prev_cpu_utilization_ = cpu_utilization_;
+
+  long int process_active_time = LinuxParser::ActiveJiffies(pid) / sysconf(_SC_CLK_TCK);
+  long int process_run_time = LinuxParser::UpTime(pid);
+  // std::cout << "process_active_time: " << process_active_time << std::endl << " . process run time . " << process_run_time<< std::endl;
+  cpu_utilization_ = (float) process_active_time /process_run_time - prev_cpu_utilization_;
+}
 
 // Return the command that generated this process
 string Process::Command() { return LinuxParser::Command(pid_); }
@@ -36,5 +46,5 @@ long int Process::UpTime() { return LinuxParser::UpTime(pid_); }
 
 // Overload the "less than" comparison operator for Process objects based on utilization
 bool Process::operator<(Process const& a) const { 
-    return cpu_utilization_ < a.cpu_utilization_;
+    return cpu_utilization_ > a.cpu_utilization_;
  }

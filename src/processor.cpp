@@ -1,6 +1,6 @@
 #include "processor.h"
 
-// Return the aggregate CPU utilization
+// Return the most recent CPU utilization
 float Processor::Utilization() {
   std::string line, key;
   std::ifstream filestream(LinuxParser::kProcDirectory+LinuxParser::kStatFilename);
