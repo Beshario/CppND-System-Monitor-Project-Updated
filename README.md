@@ -1,8 +1,9 @@
 # CppND-System-Monitor
 
-This is my implementation of the systrem monitor proejct using C++!
+This is my implementation of the systrem monitor proejct using C++ based on Udacity C++ Nanodegree Program
 
-![System Monitor](images/monitor.png)
+<!-- add picture of the solution -->
+![System Monitor](images/system_monitor_proejct.png)
 
 
 ## ncurses
@@ -21,6 +22,3 @@ if yout want to build the project, you can run the following commands:
 make build
 ./build/monitor
 ```
-
-<!-- add picture of the solution -->
-![System Monitor](images/images/system_monitor_proejct.png)
